@@ -30,18 +30,18 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @GetMapping
-    public Users getUserById(Long userId) {
-        return userService.getUserById(userId);
+    @GetMapping("/{id}")
+    public Users getUserById(Long id) {
+        return userService.getUserById(id);
     }
 
-    @PostMapping
-    public Users createUser(Users user) {
+    @PostMapping("/sign-up")
+    public Users createUser(@RequestBody Users user) {
         return userService.createUser(user);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Users> updateUser(Long id, Users userDetails) {
+    public ResponseEntity<Users> updateUser(@PathVariable Long id, @RequestBody Users userDetails) {
         Users userUpdate = userService.updateUser(id, userDetails);
         return ResponseEntity.ok(userUpdate);
     }

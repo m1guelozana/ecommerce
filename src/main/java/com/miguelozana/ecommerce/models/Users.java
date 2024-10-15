@@ -1,18 +1,16 @@
 package com.miguelozana.ecommerce.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
 @Entity
+@Table(name = "users")
 public class Users {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long userId;
+    private Long id;
 
     private String username;
     private String password;

@@ -1,7 +1,7 @@
 package com.miguelozana.ecommerce.service;
 
 import com.miguelozana.ecommerce.models.Users;
-import com.miguelozana.ecommerce.repo.UserRepository;
+import com.miguelozana.ecommerce.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,9 +17,13 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public List<Users> getAllUsers() { return userRepository.findAll(); }
+    public List<Users> getAllUsers() {
+        return userRepository.findAll();
+    }
 
-    public Users getUserById(Long userId) { return userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found")); }
+    public Users getUserById(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));
+    }
 
     public Users createUser(Users user) {
 
@@ -29,6 +33,10 @@ public class UserService {
 
         if (userRepository.findByUsername(user.getUsername()).isPresent()){
             throw new IllegalArgumentException("Username already in use! Please select a different username");
+        }
+
+        if (user.getPassword() == null || user.getPassword().isEmpty()) {
+            throw new IllegalArgumentException("Password cannot be null or empty");
         }
 
         String encodedPassword = passwordEncoder.encode(user.getPassword());
