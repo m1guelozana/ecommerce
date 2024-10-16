@@ -15,20 +15,21 @@ import com.miguelozana.ecommerce.service.CartService;
 @RestController
 @RequestMapping("/cart")
 public class CartController {
-  @Autowired
-  private CartService cartService;
 
-  @PostMapping("/{cartId}/add")
-  public ResponseEntity<ShoppingCart> addItemToCart(@PathVariable Long cartId, @RequestParam Long productId, @RequestParam Integer quantity){
-    ShoppingCart cart = cartService.addItemToCart(cartId, productId, quantity);
+    @Autowired
+    private CartService cartService;
 
-    return ResponseEntity.ok(cart);
-  }
+    @PostMapping("/{cartId}/add")
+    public ResponseEntity<ShoppingCart> addItemToCart(@PathVariable Long cartId, @RequestParam Long productId, @RequestParam Integer quantity) {
+        ShoppingCart cart = cartService.addItemToCart(cartId, productId, quantity);
 
-  @DeleteMapping("/{cartId}/delete")
-  public ResponseEntity<ShoppingCart> removeItemFromCart(@PathVariable Long cartId, @RequestParam Long cartItemId){
-    ShoppingCart cart = cartService.removeItemFromCart(cartId, cartItemId);
+        return ResponseEntity.ok(cart);
+    }
 
-    return ResponseEntity.ok(cart);
-  }
+    @DeleteMapping("/{cartId}/delete")
+    public ResponseEntity<ShoppingCart> removeItemFromCart(@PathVariable Long cartId, @RequestParam Long cartItemId) {
+        ShoppingCart cart = cartService.removeItemFromCart(cartId, cartItemId);
+
+        return ResponseEntity.ok(cart);
+    }
 }
