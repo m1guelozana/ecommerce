@@ -1,12 +1,13 @@
 package com.miguelozana.ecommerce.service;
 
-import com.miguelozana.ecommerce.models.Users;
-import com.miguelozana.ecommerce.repository.UserRepository;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.miguelozana.ecommerce.models.Users;
+import com.miguelozana.ecommerce.repository.UserRepository;
 
 @Service
 public class UserService {

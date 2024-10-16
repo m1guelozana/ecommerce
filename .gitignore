@@ -51,3 +51,6 @@ tmp/
 *.iml
 *.iws
 out/
+
+# Vscode
+.vscode/
