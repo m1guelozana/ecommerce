@@ -1,10 +1,13 @@
 package com.miguelozana.ecommerce.repository;
 
-import com.miguelozana.ecommerce.models.Users;
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.util.Optional;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.miguelozana.ecommerce.models.Users;
+
+@Repository
 public interface UserRepository extends JpaRepository<Users, Long> {
     Optional<Users> findByEmail(String email);
 
