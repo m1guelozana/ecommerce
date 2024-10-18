@@ -54,3 +54,7 @@ out/
 
 # Vscode
 .vscode/
+
+
+# Others
+.resources/*

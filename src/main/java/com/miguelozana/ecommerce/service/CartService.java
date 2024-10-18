@@ -31,7 +31,7 @@ public class CartService {
             CartItem cartItem = new CartItem();
             cartItem.setProduct(product);
             cartItem.setQuantity(quantity);
-            cartItem.setPrice(Double.valueOf(product.getPrice() * quantity));
+            cartItem.setPrice((double) (product.getPrice() * quantity));
             cartItem.setShoppingCart(cart);
 
             cart.getItems().add(cartItem);
@@ -59,7 +59,7 @@ public class CartService {
         double total = cart.getItems().stream()
                 .mapToDouble(CartItem::getPrice)
                 .sum();
-        cart.setTotalPrice(total);
+        cart.setTotal(total);
     }
 
 }
