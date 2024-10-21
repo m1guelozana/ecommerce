@@ -2,6 +2,8 @@ package com.miguelozana.ecommerce.service;
 
 import java.util.Optional;
 
+import com.miguelozana.ecommerce.models.Users;
+import com.miguelozana.ecommerce.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,7 @@ import com.miguelozana.ecommerce.models.ShoppingCart;
 import com.miguelozana.ecommerce.repository.ProductRepository;
 import com.miguelozana.ecommerce.repository.ShoppingCartRepository;
 
+
 @Service
 public class CartService {
 
@@ -19,6 +22,19 @@ public class CartService {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    public ShoppingCart createCartForUser(Long userId) {
+        Optional<Users> usersOptional = userRepository.findById(userId);
+        if (usersOptional.isPresent()) {
+            ShoppingCart cart = new ShoppingCart();
+            cart.setUser(usersOptional.get());
+            return shoppingCartRepository.save(cart);
+        }
+        return null; // User Not Found
+    }
 
     public ShoppingCart addItemToCart(Long cartId, Long productId, int quantity) {
         Optional<ShoppingCart> shOptional = shoppingCartRepository.findById(cartId);
