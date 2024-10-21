@@ -3,8 +3,15 @@ package com.miguelozana.ecommerce.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.miguelozana.ecommerce.dto.AuthRequest;
+import com.miguelozana.ecommerce.dto.AuthResponse;
+import com.miguelozana.ecommerce.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,14 +40,23 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
 
     @GetMapping
     public List<UserDTO> getAllUsers() {
         List<Users> users = userService.getAllUsers();
         return users.stream()
-                    .map(UserDTO::new)
-                    .collect(Collectors.toList());
+                .map(UserDTO::new)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
@@ -55,6 +71,13 @@ public class UserController {
         return new UserDTO(createdUser);
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<?> Login(@RequestBody AuthRequest authRequest){
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
+        UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.getUsername());
+        String token = jwtTokenProvider.generateToken(userDetails.getUsername());
+        return ResponseEntity.ok(new AuthResponse(token));
+    }
     @PutMapping("/{id}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody Users userDetails) {
         Users userUpdate = userService.updateUser(id, userDetails);
@@ -66,4 +89,6 @@ public class UserController {
         userService.deleteUser(id);
         return ResponseEntity.ok("User deleted successfully");
     }
+
+
 }

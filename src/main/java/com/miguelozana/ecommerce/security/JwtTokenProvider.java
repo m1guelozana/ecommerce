@@ -13,11 +13,11 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JwtTokenProvider {
-
-    private final String secretKey;
+    @Value("${jwt.secretKey}")
+    private static String secretKey;
 
     public JwtTokenProvider(@Value("${secret.key}") String secretKey) {
-        this.secretKey = secretKey;
+        JwtTokenProvider.secretKey = secretKey;
     }
 
     public String generateToken(String username) {
@@ -35,20 +35,20 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String extractUsername(String token) {
+    public static String extractUsername(String token) {
         return extractAllClaims(token).getSubject();
     }
 
-    private Claims extractAllClaims(String token) {
+    private static Claims extractAllClaims(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
     }
 
-    public boolean validateToken(String token, String username) {
+    public static boolean isTokenValid(String token, String username) {
         return extractUsername(token).equals(username) && !isTokenExpired(token);
 
     }
 
-    private boolean isTokenExpired(String token) {
+    private static boolean isTokenExpired(String token) {
         return extractAllClaims(token).getExpiration().before(new Date());
     }
 }
